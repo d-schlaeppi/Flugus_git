@@ -80,7 +80,7 @@
 #### prerequisites ####
 rm(list = setdiff(ls(), "first_time_use_working_directory"))
 # rm(list = ls())
-
+library(tcltk)
 if (!exists("first_time_use_working_directory") || first_time_use_working_directory == "") {
   setwd(tk_choose.dir(default = "~/", caption = "Select Working Directory")) # Direct it to where you have config_user_and_hd.R which should be in the script_directory
   first_time_use_working_directory <- getwd()
@@ -94,26 +94,18 @@ source("02_config_user_and_hd_flugus.R") # contains getUserOptions() that define
 # SCRIPTDIR <- "D:/gismo_hd6/Flugus_git"
 # SOURCEDIR <- "D:/gismo_hd6/Flugus_git/source_scripts"
 
-# load colony meta data 
-source(paste(SOURCEDIR,"s01_colony_metadata_flugus.R", sep = "/" )) 
-
+source(paste(SOURCEDIR,"s01_colony_metadata_flugus.R", sep = "/" )) # load colony meta data 
 
 #### Step 1 ####
 # Step 1: For each tracking system setting (typically 1 per tracking system) used select one exemplary colony get mean worker size
-# select the tracking files you selected for size extraction 
+# Create base files and define ants for all files, then manually orient + measure one colony per tracking system
 
 #### 1.1 Create base myrmidon files ####
+source(paste(SOURCEDIR, "s02_base_file_generator_flugus.R", sep = "/"))
 
-if (!file.exists(paste(DATADIR, "base_source.myrmidon", sep = "/"))) {
-  cat(red("The file 'base_source.myrmidon' does not exist in DATADIR", "\n", "Please manually copy it to:", DATADIR,"\n")) 
-} else {cat(blue("All good, go ahead", "\n"))}
 
-# get a list of all the myrmidon files in that folder: 
-data_list <- list.files(path=DATADIR, pattern=NULL, all.files=FALSE, full.name=FALSE) # all files
-pattern_to_exclude <- "\\.myrmidon$|\\.txt$|climate|\\.csv$"
-pattern_to_include <- "\\.\\d{4}$" # filtering for anything that ends with a dot followed by a four digit number
-data_list <- grep(pattern_to_exclude, data_list, invert = TRUE, value = TRUE)
-data_list <- grep(pattern_to_include, data_list, invert = FALSE, value = TRUE)
+
+
 
 
 

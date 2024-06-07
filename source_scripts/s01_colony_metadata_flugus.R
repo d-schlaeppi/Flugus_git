@@ -11,53 +11,47 @@
 # to load the data frame in another script just run the following line 
 # source(paste0(SOURCEDIR,"colony_metadata_flugus.R"))
 
-cat(red("Warning: dataframe not defined yet", "\n"))
+cat(red("Warning: dataframe defined but not complete and further variables might need to be defined as we go along", "\n"))
+dat <- read.csv(paste0(DATADIR,"/CFG_colony_metadata.csv"), header = TRUE, stringsAsFactors = F)
 
+# #temporary just copy it from clip board:
+# #copy stuff to the clipboard to insert in excel and vice versa
+# write_clip(paste0(tagID, collapse = "\n")) # copy from R to clipboard for pasting e.g. in excel
+# my_data <- read_clip() # read vector from clipboard in R
+# dat <- read_clip_tbl() #read table from clipboard in R
+# write.csv(dat, file = "CFG_colony_metadata.csv", row.names = FALSE)
 
+colony_metadata <- NULL
+for(i in 1:nrow(dat)) { # i <- 1
+  colony_id                 <- dat[i, "colony_id"]
+  colony_nr                 <- substring(dat[i, "colony_id"],2,3)
+  block                     <- dat[i, "block"]
+  treatment                 <- dat[i, "treatment"]
+  tracking_system_main      <- dat[i, "tracking_system"]
+  tracking_system_treatment <- "esterhase"
+  time_treatment_start      <- dat[i, "time_treatment_start"]
+  time_treatment_end        <- dat[i, "time_treatment_end"]
+  mean_ant_lenght_px        <- dat[i, "mean_ant_lenght_px"]
+  mean_ant_lenght_mm        <- dat[i, "mean_ant_lenght_mm"]
+  spores_quantified         <- dat[i, "spores_quantified"]
+  transcriptomics_conducted <- dat[i, "transcriptomics_conducted"]
+  colony_metadata <-  rbind(colony_metadata, data.frame ( colony_id,
+                                                          colony_nr,
+                                                          block,
+                                                          treatment,
+                                                          tracking_system_main,
+                                                          tracking_system_treatment,
+                                                          time_treatment_start,
+                                                          time_treatment_end,
+                                                          mean_ant_lenght_px,
+                                                          mean_ant_lenght_mm,
+                                                          spores_quantified,
+                                                          transcriptomics_conducted,
+                                                          stringsAsFactors = F))
+}
 
+cat(blue("colony_metadata for the cfg experiment is now available ", "\n"))
+print("For further comments on each of the colonies consult the notes on sharepoint:")
+print("https://uob.sharepoint.com/:x:/r/teams/grp-AntsEpidemiologyLab/_layouts/15/Doc.aspx?sourcedoc=%7B9CF14807-3A5A-4DC9-949F-89DC762185DA%7D&file=CFG_Colony_FluGus_Masterfile.xlsx&action=default&mobileredirect=true")
 
-#from VITAL: 
-# dat <- read.csv(paste0(SCRIPTDIR,"/fc2_overview_data.csv"), header = TRUE, stringsAsFactors = F)
-# colony_metadata <- NULL
-# for(i in 1:nrow(dat)) {
-#   # collect variables
-#   nr                    <- i
-#   experiment            <- dat[i, "experiment"] 
-#   colony_id             <- dat[i, "colony_id"]
-#   block                 <- dat[i, "block"]
-#   colony_nr             <- paste0("c", sprintf("%02d", i))
-#   treatment             <- dat[i, "treatment"]
-#   treatment_simple      <- ifelse((dat[i, "treatment"] == "cb"|dat[i, "treatment"] == "cy"), "control", "virus")
-#   food_position_1       <- dat[i, "food_position_1"]
-#   food_position_2       <- dat[i, "food_position_2"]
-#   tracking_system_main  <- dat[i, "tracking_system_main"]
-#   tracking_system_feeding <- dat[i, "tracking_system_feeding"]
-#   time_treatment_start  <- dat[i, "treatment_starting_time"]
-#   time_treatment_end    <- dat[i, "treatment_end_time"]
-#   annotation_start      <- dat[i, "annotation_start_time"] 
-#   annotation_stop       <- dat[i, "annotation_stop_time"]
-#   mean_ant_lenght_px    <- dat[i, "mean_ant_length_px"] # mean lenght in pixcel of the ants based on a manually oriented colony recorded with the same tracking system & setup (assuming that worker size is consistent accros colonies)
-#   mean_ant_lenght_mm    <- dat[i, "mean_ant_length_mm"] # for the future: it might be better to calculate an overall mean ant size per experiment (assuming that all ants come from the same batch of colonies) else if in one tracking system a colony with smaller ants is used for manual orientation it might create downstream effects
-#   fluorescence_measured    <- dat[i, "fluorescence_measured"]
-#   colony_metadata <-  rbind(colony_metadata, data.frame            (nr,
-#                                                         experiment, 
-#                                                         colony_id,
-#                                                         block, 
-#                                                         colony_nr,
-#                                                         treatment,
-#                                                         treatment_simple,
-#                                                         food_position_1,
-#                                                         food_position_2,
-#                                                         tracking_system_main,
-#                                                         tracking_system_feeding,
-#                                                         time_treatment_start,
-#                                                         time_treatment_end,
-#                                                         annotation_start, 
-#                                                         annotation_stop,
-#                                                         mean_ant_lenght_px,
-#                                                         mean_ant_lenght_mm,
-#                                                         fluorescence_measured,
-#                                                         stringsAsFactors = F))
-# }
-# metadata_colonies <- colony_metadata
 

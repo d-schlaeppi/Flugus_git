@@ -17,13 +17,12 @@ library(igraph)
 library(survival) #contains coxph() function
 library(moments) # contains skewness function... 
 library(crayon) # cloring messages in the terminal
-library(tcltk)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(lme4)
 library(car)
-library(glmmTMB)
+#library(glmmTMB)
 library(multcomp)
 library(plotrix)
 library(blmeco) #model testing comqqnorm
@@ -35,6 +34,7 @@ library(circular)     # used for ant orientation
 library(data.table)   # used to save files fwrite(list(myVector), file = "myFile.csv")
 library(stringr)
 library(reader)
+library(clipr)        # allows copying from and to the clipboard (e.g. read a table from clipboard) can be quite usefull. 
 
 #### Getting directories based on user name and hd ####
 
