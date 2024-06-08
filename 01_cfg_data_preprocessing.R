@@ -102,12 +102,19 @@ source(paste(SOURCEDIR,"s01_colony_metadata_flugus.R", sep = "/" )) # load colon
 
 #### 1.1 Create base myrmidon files ####
 source(paste(SOURCEDIR, "s02_base_file_generator_flugus.R", sep = "/"))
+# following the file generator manually add the tracking data to the files for which it did not work. 
+# stored in manual_check_required - if you do not proceed this very moment save manual_check_required somewhere
+# for the colonies needed then quickly run the s03_ant_generator.R script based on manual_check_required
 
+#### Step 1.2 Automatically generate the ants for the selected tracking files using the "ant_generator" ####
+# is now incorporated in step 1 and no longer needed. 
 
+#### 1.3 Manually orient files in fort myrmidon #### 
+# For one colony per tracking system used in the experiment perform manual orientation. 
+# This is required to get the mean ant size in pixels and mm which is used for extrapolation and auto-orientation of the remaining files
+# still needs to be done manually... at least it is only one colony per tracking system / tracking system setting 
 
-
-
-
+#### 1.4 Get the mean worker size per tracking system using the "ant_ruler“ ####
 
 
 

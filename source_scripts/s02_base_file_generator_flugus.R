@@ -16,6 +16,7 @@
 # DATADIR <- paste(DATADIR, "TEST_DATA_COPY", sep = "/")
 # setwd(DATADIR)
 
+
 ### checks before starting 
 if (!file.exists(paste(DATADIR, "base_source.myrmidon", sep = "/"))) {
   cat(red("The file 'base_source.myrmidon' does not exist in DATADIR", "\n", "Please manually copy it to:", DATADIR,"\n")) 
@@ -34,7 +35,8 @@ pattern_to_exclude <- "\\.myrmidon$|\\.txt$|climate|\\.csv$"
 pattern_to_include <- "\\.\\d{4}$" # filtering for anything that ends with a dot followed by a four digit number
 data_list <- grep(pattern_to_exclude, data_list, invert = TRUE, value = TRUE)
 data_list <- grep(pattern_to_include, data_list, invert = FALSE, value = TRUE)
-
+# data_list <- grep("c23", data_list, invert = FALSE, value = TRUE)
+# colony_metadata <- subset(colony_metadata, colony_id=="c23")
 
 
 #### Start Loop ####
