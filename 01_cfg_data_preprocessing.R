@@ -80,12 +80,14 @@
 #### prerequisites ####
 rm(list = setdiff(ls(), "first_time_use_working_directory"))
 # rm(list = ls())
-library(tcltk)
+
 if (!exists("first_time_use_working_directory") || first_time_use_working_directory == "") {
-  setwd(tk_choose.dir(default = "~/", caption = "Select Working Directory")) # Direct it to where you have config_user_and_hd.R which should be in the script_directory
+  setwd(tcltk::tk_choose.dir(default = "~/", caption = "Select Working Directory"))
   first_time_use_working_directory <- getwd()
   setwd(first_time_use_working_directory)
-} else {setwd(first_time_use_working_directory)}
+  cat(crayon::blue(getwd()))
+} else {setwd(first_time_use_working_directory)
+  cat(crayon::blue(getwd()))}
 
 source("02_config_user_and_hd_flugus.R") # contains getUserOptions() that defines usr, hd and useful functions as well as your directories:
 
