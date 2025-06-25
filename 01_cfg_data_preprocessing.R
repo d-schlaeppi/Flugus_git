@@ -73,9 +73,6 @@
 # https://github.com/d-schlaeppi
 # Add Linda
 
-#### TODOS ####
-
-# create a first version of the meta data for the flugus colonies
 
 #### prerequisites ####
 rm(list = setdiff(ls(), "first_time_use_working_directory"))
@@ -87,6 +84,7 @@ if (!exists("first_time_use_working_directory") || first_time_use_working_direct
   setwd(first_time_use_working_directory)
 } else {setwd(first_time_use_working_directory)}
 
+experiment <- "flugus"
 source("02_config_user_and_hd_flugus.R") # contains getUserOptions() that defines usr, hd and useful functions as well as your directories:
 
 # # should now also work on windows and if not quickly define inputs manually:
@@ -94,17 +92,28 @@ source("02_config_user_and_hd_flugus.R") # contains getUserOptions() that define
 # SCRIPTDIR <- "D:/gismo_hd6/Flugus_git"
 # SOURCEDIR <- "D:/gismo_hd6/Flugus_git/source_scripts"
 
+#' DATADIR is the directory where your tracking data is saved
+#' SCRIOTDIR is the home directory where your r scripts are stored
+#' SOURCEDIR is a sub-directory of SCRIOPTDIR containing r scripts to source for the analysis  
+
 source(paste(SOURCEDIR,"s01_colony_metadata_flugus.R", sep = "/" )) # load colony meta data 
+
+# Define what analysis step to run: 
+{
+run_s02 <- FALSE # s02_base_file_generator_flugus.R
+run_s04 <- TRUE # s04_ant_ruler_flugus.R
+}
+
 
 #### Step 1 ####
 # Step 1: For each tracking system setting (typically 1 per tracking system) used select one exemplary colony get mean worker size
 # Create base files and define ants for all files, then manually orient + measure one colony per tracking system
 
 #### 1.1 Create base myrmidon files ####
-source(paste(SOURCEDIR, "s02_base_file_generator_flugus.R", sep = "/"))
+if (run_s02) {source(paste(SOURCEDIR, "s02_base_file_generator_flugus.R", sep = "/"))}
 # following the file generator manually add the tracking data to the files for which it did not work. 
 # stored in manual_check_required - if you do not proceed this very moment save manual_check_required somewhere
-# for the colonies needed then quickly run the s03_ant_generator.R script based on manual_check_required
+# for the colonies needed then quickly run the s03_ant_generator.R script based on the colonies listed in manual_check_required
 
 #### Step 1.2 Automatically generate the ants for the selected tracking files using the "ant_generator" ####
 # is now incorporated in step 1 and no longer needed. 
@@ -112,10 +121,28 @@ source(paste(SOURCEDIR, "s02_base_file_generator_flugus.R", sep = "/"))
 #### 1.3 Manually orient files in fort myrmidon #### 
 # For one colony per tracking system used in the experiment perform manual orientation. 
 # This is required to get the mean ant size in pixels and mm which is used for extrapolation and auto-orientation of the remaining files
-# still needs to be done manually... at least it is only one colony per tracking system / tracking system setting 
+# still needs to be done manually... at least it is only one colony per tracking system / tracking system setting
+# to follow the same formatting as used in the flugus script save the files as colonyid_main_ManuallyOriented.myrmidon e.g. c01_main_ManuallyOriented.myrmidon
+# if you have no other files with ManuallyOriented in the filename the following script should run for you.
+
 
 #### 1.4 Get the mean worker size per tracking system using the "ant_ruler“ ####
+# source the standalone r-script called ant_ruler
+if (run_s04) {source(paste(SOURCEDIR, "s04_ant_ruler_flugus.R", sep = "/"))}
 
+
+### TO DO
+#' Check if all of the data is needed and for which files we can just get rid of the acclimatisation tracking period.
+#' With only the right data rerun the base file creater and update it with Metadata keys and zones
+#' Manual Post processing (old step 3.4)
+#' Give Nathalie the Data for Data extrapolation 
+#' Run ant Orient express: 
+#' #### 3.5 Ant Orient Express ####
+# !!! To do: Needs to be updated slightly because there were some issues in Adrianos script in with the capsule assignment 
+# See the capsule cloner for an updated version of the capsule assignment (using capsule number instead of capsule names. )
+#' Get the right capsules: the 2018 capsule and the best grooming capsule
+#' Run the grooming stuff
+#' Continue with next analysis scripts.
 
 
 

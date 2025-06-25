@@ -27,10 +27,10 @@ for(i in 1:nrow(dat)) { # i <- 1
   colony_nr                 <- substring(dat[i, "colony_id"],2,3)
   block                     <- dat[i, "block"]
   treatment                 <- dat[i, "treatment"]
-  tracking_system_main      <- dat[i, "tracking_system"]
+  tracking_system_main      <- dat[i, "tracking_system_main"]
   tracking_system_treatment <- "esterhase"
-  time_treatment_start      <- dat[i, "time_treatment_start"]
-  time_treatment_end        <- dat[i, "time_treatment_end"]
+  time_treatment_start      <- dat[i, "treatment_starting_time"]
+  time_treatment_end        <- dat[i, "experiment_end_time"]
   mean_ant_lenght_px        <- dat[i, "mean_ant_lenght_px"]
   mean_ant_lenght_mm        <- dat[i, "mean_ant_lenght_mm"]
   spores_quantified         <- dat[i, "spores_quantified"]
