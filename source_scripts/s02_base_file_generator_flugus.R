@@ -19,7 +19,8 @@
 
 ### checks before starting 
 if (!file.exists(paste(DATADIR, "base_source.myrmidon", sep = "/"))) {
-  cat(red("The file 'base_source.myrmidon' does not exist in DATADIR", "\n", "Please manually copy it to:", DATADIR,"\n")) 
+  cat(red("The file 'base_source.myrmidon' does not exist in DATADIR", "\n", "Please manually copy it to:", DATADIR,"\n"))
+  stop("Script terminated because 'base_source.myrmidon' was not found.")
 } else {cat(blue("base_source.myrmidon exists in DATADIR, go ahead", "\n"))}
 if (!exists("colony_metadata")) {stop("Error: The colony_metadata is not loaded.")} else {cat("colony_metadata is loaded.\n")}
 status_file <- paste(DATADIR, "basefile_generator_status.txt", sep = "/")

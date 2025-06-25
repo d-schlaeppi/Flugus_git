@@ -12,32 +12,33 @@
 # additionally it loads a couple of libraries and functions required in other scripts further down the analysis pipelines
 
 #### Libraries ####
-library(tcltk)
-library(igraph)
-library(survival) #contains coxph() function
-library(moments) # contains skewness function... 
-library(crayon) # cloring messages in the terminal
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(lme4)
-library(car)
-#library(glmmTMB)
-library(multcomp)
-library(plotrix)
-library(blmeco) #model testing comqqnorm
-library(DHARMa) # model testing
-library(FortMyrmidon) # R bindings
-library(R.utils)      # printf()
-library(Rcpp)         # contains sourceCpp (used for ant orientation)
-library(circular)     # used for ant orientation
-library(data.table)   # used to save files fwrite(list(myVector), file = "myFile.csv")
-library(stringr)
-library(reader)
-library(clipr)        # allows copying from and to the clipboard (e.g. read a table from clipboard) can be quite usefull. 
+pacman::p_load(tcltk, 
+               igraph,
+               survival, #contains coxph() function
+               moments, # contains skewness function... 
+               crayon, # cloring messages in the terminal
+               dplyr,
+               tidyr,
+               ggplot2, 
+               lme4, 
+               car,
+               multcomp,
+               plotrix,
+               blmeco, #model testing comqqnorm
+               DHARMa, # model testing
+               FortMyrmidon, # R bindings
+               R.utils,      # printf()
+               Rcpp,         # contains sourceCpp (used for ant orientation)
+               circular,     # used for ant orientation
+               data.table,   # used to save files fwrite(list(myVector), file = "myFile.csv")
+               stringr,
+               reader,
+               clipr)        # allows copying from and to the clipboard (e.g. read a table from clipboard) can be quite usefull. 
+
+
+
 
 #### Getting directories based on user name and hd ####
-
 getUserOptions <- function() {
   os <- Sys.info()["sysname"]
   usr <- ""
@@ -78,7 +79,7 @@ getUserOptions <- function() {
 }
 getUserOptions()
 
-set_directories <- function(os, hd, usr) {
+set_directories <- function(os, hd, usr) { # os <- "Linux" ; hd <- "DISK_Z"; usr <- "gw20248"
   if (os == "Linux") {
     DATADIR <- paste("/media", usr, hd, "data/CFG", sep = "/")
     SCRIPTDIR <- paste("/media", usr, hd, "Flugus_git", sep = "/")
