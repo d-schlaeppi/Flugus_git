@@ -25,6 +25,9 @@
 
 #### Background information | Read me ####
 
+#' Script written by Daniel Schläppi based on previous versions by:
+#' Compatible with Myrmidon 0.8.3
+
 # Useful information before starting the tracking experiment. 
 # Tracking systems - don't change settings (camera height etc) throughout the experiment. Settings for one specific tracking system should stay the same to minimize manual orientation
 # If you use separate systems for main tracking and treatment tracking: Don't mix them. Always the same tracking systems for main tracking and different systems for treatment tracking (Unless you can use exactly the same setup) 
@@ -79,7 +82,11 @@ rm(list = setdiff(ls(), "first_time_use_working_directory"))
 # rm(list = ls())
 
 if (!exists("first_time_use_working_directory") || first_time_use_working_directory == "") {
-  setwd(tcltk::tk_choose.dir(default = "~/", caption = "Select Working Directory"))
+  standard <- "/media/ael/gismo_hd6/Flugus_git"
+  selected_dir <- if (dir.exists(standard)) {standard} else {tcltk::tk_choose.dir(default = "~/", caption = "Select Working Directory")}
+  if(is.null(selected_dir) || selected_dir == "") {cat("No directory selected. Exiting.\n")
+    return()}
+  setwd(selected_dir)
   first_time_use_working_directory <- getwd()
   setwd(first_time_use_working_directory)
   cat(crayon::blue(getwd()))
@@ -90,34 +97,36 @@ experiment <- "flugus"
 source("02_config_user_and_hd_flugus.R") # contains getUserOptions() that defines usr, hd and useful functions as well as your directories:
 
 # # should now also work on windows and if not quickly define inputs manually:
-# DATADIR <- "D:/gismo_hd6/data/CFG"
+# DATADIR <- "D:/gismo_hd6/data/CFG_extrapolated"
 # SCRIPTDIR <- "D:/gismo_hd6/Flugus_git"
 # SOURCEDIR <- "D:/gismo_hd6/Flugus_git/source_scripts"
-
 #' DATADIR is the directory where your tracking data is saved
 #' SCRIOTDIR is the home directory where your r scripts are stored
 #' SOURCEDIR is a sub-directory of SCRIOPTDIR containing r scripts to source for the analysis  
 
 source(paste(SOURCEDIR,"s01_colony_metadata_flugus.R", sep = "/" )) # load colony meta data 
 
+
 # Define what analysis step to run: 
-{
-run_s02 <- FALSE # s02_base_file_generator_flugus.R
-run_s04 <- TRUE # s04_ant_ruler_flugus.R
+if(TRUE) { 
+  run_s02 <- FALSE # s02_base_file_generator_flugus.R
+  run_s04 <- FALSE # s04_ant_ruler_flugus.R
+  run_s05 <- TRUE # meta data generator
 }
 
-
-#### Step 1 ####
-# Step 1: For each tracking system setting (typically 1 per tracking system) used select one exemplary colony get mean worker size
-# Create base files and define ants for all files, then manually orient + measure one colony per tracking system
+#### 1. First Step ####
+# Create base files and define ants for all files, then manually orient + measure one colony per tracking system:
+# Then, For each tracking system setting used (typically 1 per tracking system), select one exemplary colony to get mean worker size with the ant_ruler script
+# Use this information to do the data extrapolation
 
 #### 1.1 Create base myrmidon files ####
 if (run_s02) {source(paste(SOURCEDIR, "s02_base_file_generator_flugus.R", sep = "/"))}
+
 # following the file generator manually add the tracking data to the files for which it did not work. 
-# stored in manual_check_required - if you do not proceed this very moment save manual_check_required somewhere
+# Those files are stored in manual_check_required - if you do not proceed this very moment save manual_check_required somewhere
 # for the colonies needed then quickly run the s03_ant_generator.R script based on the colonies listed in manual_check_required
 
-#### Step 1.2 Automatically generate the ants for the selected tracking files using the "ant_generator" ####
+#### 1.2 Automatically generate the ants for the selected tracking files using the "ant_generator" ####
 # is now incorporated in step 1 and no longer needed. 
 
 #### 1.3 Manually orient files in fort myrmidon #### 
@@ -132,13 +141,42 @@ if (run_s02) {source(paste(SOURCEDIR, "s02_base_file_generator_flugus.R", sep = 
 # source the standalone r-script called ant_ruler
 if (run_s04) {source(paste(SOURCEDIR, "s04_ant_ruler_flugus.R", sep = "/"))}
 
+#### 1.5 Data extrapolation ####
+#' To correct short tag blinks (non detection) we run nathalies data extrapolation code 
+#' In brief, it will identify moments where the tag was not detected for a very short moment and fill in the missing trajectories.
+#' Done on the good computer. Requires two HDs with sufficent space the raw data and the file containing the mean worker size per tracking system.
 
-### TO DO
+#### 1.6 Add meta data keys and zones ####
+
+#' For one example colony pre define the zoes in the nest:
+#' Nest, Arena, Water, Sugar Water
+#' Save it as zone_source.myrmidon
+
+if (run_s05) {source(paste(SOURCEDIR, "s05_meta_generator.R", sep = "/"))}
+
+#### 1.7 Ant Orient Express ####
+# if (run_s06) {source(paste(SOURCEDIR, "s06_NAME ANT ORIENT EXPRESS.R", sep = "/"))}
+
+#### 1.8 Manual post processing ####
+# Done by Ana
+
+
+
+
+
+
+
+#### TO DO NEXT ####
 #' Check if all of the data is needed and for which files we can just get rid of the acclimatisation tracking period.
 #' With only the right data rerun the base file creater and update it with Metadata keys and zones
 #' Manual Post processing (old step 3.4)
 #' Give Nathalie the Data for Data extrapolation 
+#' 
+#' Retagged ants
+#' Add meta data : retagged, tag 1, tag 2
+#' 
 #' Run ant Orient express: 
+#' 
 #' #### 3.5 Ant Orient Express ####
 # !!! To do: Needs to be updated slightly because there were some issues in Adrianos script in with the capsule assignment 
 # See the capsule cloner for an updated version of the capsule assignment (using capsule number instead of capsule names. )

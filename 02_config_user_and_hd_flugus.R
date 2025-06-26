@@ -81,17 +81,17 @@ getUserOptions()
 
 set_directories <- function(os, hd, usr) { # os <- "Linux" ; hd <- "DISK_Z"; usr <- "gw20248"
   if (os == "Linux") {
-    DATADIR <- paste("/media", usr, hd, "data/CFG", sep = "/")
+    DATADIR <- paste("/media", usr, hd, "data/CFG_extrapolated", sep = "/")
     SCRIPTDIR <- paste("/media", usr, hd, "Flugus_git", sep = "/")
   } else if (os == "Darwin") {
-    DATADIR <- paste("/Volumes", hd, "data/CFG", sep = "/")
+    DATADIR <- paste("/Volumes", hd, "data/CFG_extrapolated", sep = "/")
     SCRIPTDIR <- paste("/Volumes", hd, "Flugus_git", sep = "/")
   } else if (os == "Windows") {
     hd <- gsub("\\\\$", "", hd)  # Remove trailing backslash if present
     if (!grepl("^[A-Za-z]:", hd)) {
       stop("Invalid hard drive name. It should start with a drive letter, e.g., 'C:'.")
     }
-    DATADIR <- paste(hd, "data/CFG", sep = "/")
+    DATADIR <- paste(hd, "data/CFG_extrapolated", sep = "/")
     SCRIPTDIR <- paste(hd, "Flugus_git", sep = "/")
   }
   SOURCEDIR <- paste(SCRIPTDIR, "source_scripts", sep = "/")

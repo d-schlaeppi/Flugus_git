@@ -75,7 +75,7 @@ for (i in 1:nrow(colony_metadata)) { # i <- 1
             if ( tag_statistics[j,"count"] >= 0.01*max(tag_statistics[,"count"],na.rm=T) ) { # antID only if the tag detection rate was more than 1/100 (adriano used 1/1000) of the best tag detection rate
             a <- tracking_data$createAnt(); # creates an antID, i.e. associates a decimal antID number to that particular tagID
             identification <- tracking_data$addIdentification(a$ID,tag_statistics[j,"tagDecimalValue"],fmTimeSinceEver(),fmTimeForever())
-            print(identification)
+            # print(identification)
             }
        } }
       tracking_data$save(paste0(DATADIR, "/", colony_metadata[i,"colony_id"], '_main.myrmidon')) # save the file base file with created ants
@@ -104,7 +104,7 @@ for (i in 1:nrow(colony_metadata)) { # i <- 1
         if ( tag_statistics[j,"count"] >= 0.01*max(tag_statistics[,"count"],na.rm=T) ) { # antID only if the tag detection rate was more than 1/100 (adriano used 1/1000) of the best tag detection rate
           a <- tracking_data$createAnt(); # creates an antID, i.e. associates a decimal antID number to that particular tagID
           identification <- tracking_data$addIdentification(a$ID,tag_statistics[j,"tagDecimalValue"],fmTimeSinceEver(),fmTimeForever())
-          print(identification)
+          # print(identification)
         }
       }}
       tracking_data$save(paste0(DATADIR, "/" , colony_metadata[i,"colony_id"], '_treatment.myrmidon')) # save the file base file with created ants
@@ -125,4 +125,4 @@ writeLines(text, con = status_file)
 # The way the rcpp package works (the package that allows a R program to interface with C++), if you fail to provide all needed arguments, it returns this very cryptic method, which does not tell you to add the missing value.
 # To get the old behavior please use FALSE, and the call will fail if there is a data corruption. Use TRUE to ask to not fail but try to fix any encountered error (will cause permanent data loss, but let you recover as much data as possible).
 
-
+### consider adding the progress bar... 
